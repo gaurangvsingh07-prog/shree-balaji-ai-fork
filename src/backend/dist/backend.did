@@ -1,0 +1,245 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfileView = 
+ record {
+   createdAt: Timestamp;
+   email: text;
+   subscriptionTier: SubscriptionTier;
+   userId: UserId;
+ };
+type UserProfileData = 
+ record {
+   email: text;
+   subscriptionTier: SubscriptionTier;
+ };
+type UserId = principal;
+type Timestamp = int;
+type SubscriptionTier = 
+ variant {
+   basic;
+   enterprise;
+   free;
+   pro;
+ };
+type LeadStatus = 
+ variant {
+   Closed;
+   New;
+   Qualified;
+   Scheduled;
+ };
+type LeadSource = 
+ variant {
+   AICall;
+   Manual;
+ };
+type LeadRecordView = 
+ record {
+   agentId: opt text;
+   budget: opt text;
+   businessId: text;
+   buyingTimeline: opt text;
+   createdAt: Timestamp;
+   customerName: text;
+   email: opt text;
+   leadId: text;
+   location: opt text;
+   notes: text;
+   phone: text;
+   priority: LeadPriority;
+   propertyType: opt text;
+   siteVisitInterest: bool;
+   source: LeadSource;
+   status: LeadStatus;
+   updatedAt: Timestamp;
+ };
+type LeadRecordUpdate = 
+ record {
+   agentId: opt text;
+   budget: opt text;
+   buyingTimeline: opt text;
+   customerName: text;
+   email: opt text;
+   location: opt text;
+   notes: text;
+   phone: text;
+   priority: LeadPriority;
+   propertyType: opt text;
+   siteVisitInterest: bool;
+   status: LeadStatus;
+ };
+type LeadRecordInput = 
+ record {
+   agentId: opt text;
+   budget: opt text;
+   businessId: text;
+   buyingTimeline: opt text;
+   customerName: text;
+   email: opt text;
+   location: opt text;
+   notes: text;
+   phone: text;
+   priority: LeadPriority;
+   propertyType: opt text;
+   siteVisitInterest: bool;
+   source: LeadSource;
+ };
+type LeadPriority = 
+ variant {
+   High;
+   Low;
+   Medium;
+ };
+type CallStatus = 
+ variant {
+   Completed;
+   Missed;
+   Transferred;
+ };
+type CallLogView = 
+ record {
+   agentId: opt text;
+   businessId: text;
+   callId: text;
+   callStatus: CallStatus;
+   calleePhone: text;
+   callerPhone: text;
+   createdAt: Timestamp;
+   durationSeconds: nat;
+   recordingUrl: opt text;
+   transcriptSnippet: opt text;
+ };
+type CallLogInput = 
+ record {
+   agentId: opt text;
+   businessId: text;
+   callStatus: CallStatus;
+   calleePhone: text;
+   callerPhone: text;
+   durationSeconds: nat;
+   recordingUrl: opt text;
+   transcriptSnippet: opt text;
+ };
+type BusinessProfileView = 
+ record {
+   address: text;
+   aiPersonality: AIPersonality;
+   businessId: text;
+   businessName: text;
+   category: BusinessCategory;
+   createdAt: Timestamp;
+   email: text;
+   logoUrl: opt text;
+   phone: text;
+   userId: UserId;
+   whatsapp: opt text;
+ };
+type BusinessProfileInput = 
+ record {
+   address: text;
+   aiPersonality: AIPersonality;
+   businessName: text;
+   category: BusinessCategory;
+   email: text;
+   logoUrl: opt text;
+   phone: text;
+   whatsapp: opt text;
+ };
+type BusinessCategory = 
+ variant {
+   Clinic;
+   Coaching;
+   Gym;
+   RealEstate;
+   Restaurant;
+   Salon;
+ };
+type AgentTone = 
+ variant {
+   casual;
+   formal;
+   friendly;
+   professional;
+ };
+type AgentStatus = 
+ variant {
+   active;
+   paused;
+ };
+type AgentLanguage = 
+ variant {
+   english;
+   hindi;
+   marathi;
+ };
+type AgentConfigView = 
+ record {
+   agentId: text;
+   agentName: text;
+   businessId: text;
+   createdAt: Timestamp;
+   customInstructions: text;
+   language: AgentLanguage;
+   status: AgentStatus;
+   tone: AgentTone;
+   useCase: BusinessCategory;
+ };
+type AgentConfigUpdate = 
+ record {
+   agentName: text;
+   customInstructions: text;
+   language: AgentLanguage;
+   status: AgentStatus;
+   tone: AgentTone;
+   useCase: BusinessCategory;
+ };
+type AgentConfigInput = 
+ record {
+   agentName: text;
+   customInstructions: text;
+   language: AgentLanguage;
+   tone: AgentTone;
+   useCase: BusinessCategory;
+ };
+type AIPersonality = 
+ record {
+   language: AgentLanguage;
+   tone: AgentTone;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createAgent: (businessId: text, input: AgentConfigInput) ->
+   (AgentConfigView);
+  createBusiness: (input: BusinessProfileInput) -> (BusinessProfileView);
+  createCallLog: (input: CallLogInput) -> (CallLogView);
+  createLead: (input: LeadRecordInput) -> (LeadRecordView);
+  deleteAgent: (agentId: text) -> (bool);
+  deleteBusiness: (businessId: text) -> (bool);
+  deleteCallLog: (callId: text) -> (bool);
+  deleteLead: (leadId: text) -> (bool);
+  deleteUserProfile: () -> (bool);
+  getAgent: (agentId: text) -> (opt AgentConfigView) query;
+  getBusiness: (businessId: text) -> (opt BusinessProfileView) query;
+  getCallLog: (callId: text) -> (opt CallLogView) query;
+  getCallerUserProfile: () -> (opt UserProfileView) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getLead: (leadId: text) -> (opt LeadRecordView) query;
+  getUserProfile: (userId: UserId) -> (opt UserProfileView) query;
+  isCallerAdmin: () -> (bool) query;
+  listAgentsByBusiness: (businessId: text) -> (vec AgentConfigView) query;
+  listCallLogsByBusiness: (businessId: text) -> (vec CallLogView) query;
+  listLeadsByBusiness: (businessId: text) -> (vec LeadRecordView) query;
+  listMyBusinesses: () -> (vec BusinessProfileView) query;
+  saveCallerUserProfile: (data: UserProfileData) -> (UserProfileView);
+  updateAgent: (agentId: text, input: AgentConfigUpdate) ->
+   (opt AgentConfigView);
+  updateBusiness: (businessId: text, input: BusinessProfileInput) ->
+   (opt BusinessProfileView);
+  updateLead: (leadId: text, input: LeadRecordUpdate) -> (opt LeadRecordView);
+  updateUserProfile: (data: UserProfileData) -> (opt UserProfileView);
+}

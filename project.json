@@ -1,0 +1,25 @@
+{
+  "overview": "Shree Balaji AI is a premium SaaS platform for AI-powered voice agents that help real estate and other businesses qualify leads, manage calls, schedule appointments, and track performance — all from a modern, responsive dashboard.",
+  "features": [
+    "AI Voice Agent management with templates for Real Estate, Salon, Clinic, Gym, and more",
+    "Lead CRM with kanban pipeline, customer profiles, notes, and follow-up reminders",
+    "Call logs with transcript snippets, filters, and status tracking",
+    "Analytics dashboard with KPI cards, agent status, and upcoming appointments",
+    "Business onboarding wizard with logo upload and AI personality configuration",
+    "Subscription pricing page with Free, Basic, Pro, and Enterprise plans",
+    "Premium dark/light mode UI with glassmorphism cards and smooth animations",
+    "Fully mobile-responsive layout with Internet Identity authentication"
+  ],
+  "category": "productivity",
+  "tags": [
+    "ai",
+    "saas",
+    "voice-agent",
+    "crm",
+    "real-estate",
+    "dashboard",
+    "lead-management",
+    "business"
+  ],
+  "last_updated": "2026-05-15T06:42:47.829Z"
+}

@@ -1,0 +1,131 @@
+// Version: 1.0.0
+type AIPersonality__314817445 =
+  {language : AgentLanguage__96673241; tone : AgentTone__569669326};
+type AgentConfig__504922698 =
+  {
+    agentId : Text;
+    var agentName : Text;
+    businessId : Text;
+    createdAt : Timestamp__301639476;
+    var customInstructions : Text;
+    var language : AgentLanguage__96673241;
+    var status : AgentStatus__815548718;
+    var tone : AgentTone__569669326;
+    var useCase : BusinessCategory__736893582
+  };
+type AgentLanguage__96673241 = {#english; #hindi; #marathi};
+type AgentStatus__815548718 = {#active; #paused};
+type AgentTone__569669326 = {#casual; #formal; #friendly; #professional};
+type BusinessCategory__736893582 =
+  {#Clinic; #Coaching; #Gym; #RealEstate; #Restaurant; #Salon};
+type BusinessProfile__705198034 =
+  {
+    var address : Text;
+    var aiPersonality : AIPersonality__314817445;
+    businessId : Text;
+    var businessName : Text;
+    var category : BusinessCategory__736893582;
+    createdAt : Timestamp__301639476;
+    var email : Text;
+    var logoUrl : ?Text;
+    var phone : Text;
+    userId : UserId__158757552;
+    var whatsapp : ?Text
+  };
+type CallLog__846563029 =
+  {
+    var agentId : ?Text;
+    businessId : Text;
+    callId : Text;
+    callStatus : CallStatus__114317262;
+    calleePhone : Text;
+    callerPhone : Text;
+    createdAt : Timestamp__301639476;
+    durationSeconds : Nat;
+    var recordingUrl : ?Text;
+    var transcriptSnippet : ?Text
+  };
+type CallStatus__114317262 = {#Completed; #Missed; #Transferred};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type LeadPriority__415058556 = {#High; #Low; #Medium};
+type LeadRecord__404554106 =
+  {
+    var agentId : ?Text;
+    var budget : ?Text;
+    businessId : Text;
+    var buyingTimeline : ?Text;
+    createdAt : Timestamp__301639476;
+    var customerName : Text;
+    var email : ?Text;
+    leadId : Text;
+    var location : ?Text;
+    var notes : Text;
+    var phone : Text;
+    var priority : LeadPriority__415058556;
+    var propertyType : ?Text;
+    var siteVisitInterest : Bool;
+    source : LeadSource__329657463;
+    var status : LeadStatus__425905407;
+    var updatedAt : Timestamp__301639476
+  };
+type LeadSource__329657463 = {#AICall; #Manual};
+type LeadStatus__425905407 = {#Closed; #New; #Qualified; #Scheduled};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type SubscriptionTier__75232000 = {#basic; #enterprise; #free; #pro};
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserProfile__277265826 =
+  {
+    createdAt : Timestamp__301639476;
+    var email : Text;
+    var subscriptionTier : SubscriptionTier__75232000;
+    userId : UserId__158757552
+  };
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable agentState : {var nextId : Nat};
+  stable agents :
+    {
+      var root : Node__46230540<Text, AgentConfig__504922698>;
+      var size : Nat__490723111
+    };
+  stable businessState : {var nextId : Nat};
+  stable businesses :
+    {
+      var root : Node__46230540<Text, BusinessProfile__705198034>;
+      var size : Nat__490723111
+    };
+  stable callLogs :
+    {
+      var root : Node__46230540<Text, CallLog__846563029>;
+      var size : Nat__490723111
+    };
+  stable callState : {var nextId : Nat};
+  stable leadState : {var nextId : Nat};
+  stable leads :
+    {
+      var root : Node__46230540<Text, LeadRecord__404554106>;
+      var size : Nat__490723111
+    };
+  stable users :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__277265826>;
+      var size : Nat__490723111
+    }
+};
